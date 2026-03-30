@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City of Pharr — Pharr Way Journey Top Voyagers Leaderboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --navy:      #1B3A6B;
+    --navy-dark: #0F2347;
+    --navy-mid:  #254C8C;
+    --gold:      #D4A853;
+    --gold-lt:   #F0C878;
+    --white:     #FFFFFF;
+    --muted:     #8A9BB5;
+    --bg:        #F2F5FB;
+    --border:    #DDE3EE;
+    --surface:   #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--navy-dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy-dark);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 3px solid var(--gold);
+  }
+  .header-badge {
+    width: 52px; height: 52px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--navy-dark);
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; color: var(--white);
+    letter-spacing: 0.3px;
+  }
+  header p { font-size: 12px; color: var(--muted); margin-top: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* ── LAYOUT ── */
+  .main { max-width: 1080px; margin: 0 auto; padding: 32px 24px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .card-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* ── SOURCE TABS ── */
+  .pill-tabs { display: flex; gap: 6px; margin-bottom: 18px; }
+  .pill {
+    padding: 7px 18px; border-radius: 20px;
+    border: 2px solid var(--border);
+    cursor: pointer; font-size: 13px; font-weight: 600;
+    background: transparent; color: var(--navy);
+    transition: all .15s;
+  }
+  .pill.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+  .source-zone { animation: fadeIn .2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .row { display: flex; gap: 10px; align-items: center; }
+  input[type=text] {
+    flex: 1; padding: 10px 14px;
+    border-radius: 8px; border: 1.5px solid var(--border);
+    font-size: 14px; font-family: inherit; outline: none;
+    transition: border-color .15s;
+  }
+  input[type=text]:focus { border-color: var(--navy); }
+
+  .btn {
+    padding: 10px 20px; border-radius: 8px;
+    border: none; cursor: pointer;
+    font-size: 13px; font-weight: 700;
+    font-family: inherit; transition: opacity .15s;
+    white-space: nowrap;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-navy { background: var(--navy); color: var(--white); }
+  .btn-gold { background: var(--gold); color: var(--navy-dark); }
+
+  .hint { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+  .hint code { background: #EEF1F9; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+
+  #status { font-size: 13px; font-weight: 600; margin-top: 12px; min-height: 18px; }
+  .ok  { color: #5BAD7F; }
+  .err { color: #E07B5A; }
+
+  /* ── META BAR ── */
+  .meta-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+  }
+  .meta-bar small { font-size: 12px; color: var(--muted); }
+
+  /* ── VIEW TABS ── */
+  .view-tabs {
+    display: flex; gap: 4px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 10px; padding: 4px; width: fit-content;
+  }
+  .view-tab {
+    padding: 8px 20px; border-radius: 7px;
+    border: none; background: transparent;
+    font-size: 14px; font-weight: 600;
+    font-family: inherit; color: var(--muted);
+    cursor: pointer; transition: all .15s;
+  }
+  .view-tab.active { background: var(--navy); color: var(--white); }
+
+  /* ── LEADERBOARD TABLE ── */
+  .lb-header {
+    display: grid;
+    grid-template-columns: 56px 1fr 200px 90px;
+    padding: 11px 24px;
+    background: var(--navy-dark);
+    border-radius: 10px 10px 0 0;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .lb-header div:last-child { text-align: right; }
+
+  #rank-rows { border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; }
+
+  .rank-row {
+    display: grid;
+    grid-template-columns: 56px 1fr 200px 90px;
+    padding: 15px 24px; align-items: center;
+    border-bottom: 1px solid var(--bg);
+    transition: background .12s;
+  }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-row:hover { background: #F7F9FD; }
+
+  .rank-icon { font-size: 22px; }
+
+  .dept-name { font-size: 15px; font-weight: 600; }
+  .dept-sub  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .bar-bg   { flex: 1; height: 7px; background: #EDF0F7; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width .7s cubic-bezier(.4,0,.2,1); }
+
+  .total { font-size: 20px; font-weight: 700; color: var(--navy); text-align: right; }
+
+  /* ── CHART ── */
+  .chart-title { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 4px; }
+  .chart-sub   { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  /* ── SHOW ALL TOGGLE ── */
+  .show-all-wrap { text-align: center; padding: 16px 0 4px; }
+  .show-all-btn {
+    background: none; border: 1.5px solid var(--border);
+    color: var(--muted); font-family: inherit;
+    font-size: 13px; font-weight: 600;
+    padding: 8px 24px; border-radius: 20px;
+    cursor: pointer; transition: all .15s;
+  }
+  .show-all-btn:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 640px) {
+    header { padding: 16px 20px; }
+    .main  { padding: 20px 16px; }
+    .lb-header, .rank-row { grid-template-columns: 44px 1fr 0 70px; }
+    .lb-header div:nth-child(3), .rank-row .bar-wrap { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">P</div>
+  <div>
+    <h1>City of Pharr — Pharr Way Journey Top Voyagers Leaderboard</h1>
+    <p>Office of Strategic Excellence · Department Activity Tracker</p>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- ADMIN PANEL — only visible with ?admin=pharr2026 in the URL -->
+  <div id="admin-panel" class="card" style="display:none">
+    <div class="card-label">⚙️ OSE Internal — Data Source</div>
+    <div class="pill-tabs">
+      <button class="pill active" onclick="setMode('sample')">📋 Sample Data</button>
+      <button class="pill"        onclick="setMode('csv')">⬆ Upload CSV</button>
+      <button class="pill"        onclick="setMode('sheets')">📊 Google Sheets</button>
+    </div>
+
+    <!-- CSV Zone -->
+    <div id="csv-zone" class="source-zone" style="display:none">
+      <div class="row">
+        <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="handleCSV(this)">
+        <button class="btn btn-gold" onclick="document.getElementById('csvFile').click()">Choose CSV File</button>
+        <span id="csv-name" style="font-size:13px;color:var(--muted)">No file selected</span>
+      </div>
+      <p class="hint">
+        Required columns: <code>Name</code> <code>Department</code> <code>Activities</code> <code>Week</code><br>
+        Example row: <code>Keyla Jalife, OSE, 12, Wk 1</code>
+      </p>
+    </div>
+
+    <!-- Sheets Zone -->
+    <div id="sheets-zone" class="source-zone" style="display:none">
+      <div class="row">
+        <input type="text" id="sheetsUrl" placeholder="Paste Google Sheets published CSV URL…">
+        <button class="btn btn-navy" onclick="handleSheets()">Load</button>
+      </div>
+      <p class="hint">
+        In Google Sheets: <code>File → Share → Publish to web → Entire Document → CSV</code><br>
+        Copy the link and paste it above. The sheet must be published (not just shared).
+      </p>
+    </div>
+
+    <div id="status"></div>
+  </div>
+
+  <!-- META + VIEW TOGGLE -->
+  <div class="meta-bar">
+    <small>Last updated: <span id="last-updated">Sample Data</span></small>
+    <div class="view-tabs">
+      <button class="view-tab active" id="tab-board"  onclick="switchView('board')">🏆 Rankings</button>
+      <button class="view-tab"        id="tab-trends" onclick="switchView('trends')">📈 Trends</button>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD VIEW -->
+  <div id="view-board">
+    <div class="lb-header">
+      <div>Rank</div>
+      <div>Department</div>
+      <div>Progress</div>
+      <div style="text-align:right">Total</div>
+    </div>
+    <div id="rank-rows"></div>
+    <div class="show-all-wrap">
+      <button class="show-all-btn" id="show-all-btn" onclick="toggleShowAll()">Show all departments ▾</button>
+    </div>
+  </div>
+
+  <!-- TRENDS VIEW -->
+  <div id="view-trends" style="display:none">
+    <div class="card">
+      <div class="chart-title">Activity Trends Over Time</div>
+      <div class="chart-sub">Total activities per department by reporting week</div>
+      <canvas id="trendChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── ADMIN GATE ────────────────────────────────────────────
+// Change 'pharr2026' below to whatever password you want.
+// Admin link: https://yoursite.github.io/pharr-leaderboard?admin=pharr2026
+const ADMIN_PASSWORD = 'pharr2026';
+const isAdmin = new URLSearchParams(window.location.search).get('admin') === ADMIN_PASSWORD;
+if (isAdmin) document.getElementById('admin-panel').style.display = 'block';
+
+// ── SEED DATA ──────────────────────────────────────────────
+const SAMPLE = [
+  {name:"Maria Torres",    department:"Administration",    activities:12, week:"Wk 1"},
+  {name:"Carlos Vega",     department:"Administration",    activities:9,  week:"Wk 2"},
+  {name:"Sofia Garza",     department:"Administration",    activities:15, week:"Wk 3"},
+  {name:"Rachel Kim",      department:"Parks & Recreation",activities:18, week:"Wk 1"},
+  {name:"David Cruz",      department:"Parks & Recreation",activities:14, week:"Wk 2"},
+  {name:"Elena Ortiz",     department:"Parks & Recreation",activities:20, week:"Wk 3"},
+  {name:"Sandra Lopez",    department:"Police",            activities:14, week:"Wk 1"},
+  {name:"Officer Davis",   department:"Police",            activities:12, week:"Wk 2"},
+  {name:"Chief Morales",   department:"Police",            activities:16, week:"Wk 3"},
+  {name:"Captain Ruiz",    department:"Fire Rescue",       activities:11, week:"Wk 1"},
+  {name:"Lt. Garza",       department:"Fire Rescue",       activities:13, week:"Wk 2"},
+  {name:"FF Martinez",     department:"Fire Rescue",       activities:9,  week:"Wk 3"},
+  {name:"James Rivera",    department:"Public Works",      activities:8,  week:"Wk 1"},
+  {name:"Ana Flores",      department:"Public Works",      activities:11, week:"Wk 2"},
+  {name:"Luis Mendez",     department:"Public Works",      activities:7,  week:"Wk 3"},
+  {name:"Mike Chen",       department:"Finance",           activities:6,  week:"Wk 1"},
+  {name:"Linda Pena",      department:"Finance",           activities:10, week:"Wk 2"},
+  {name:"Tom Reyes",       department:"Finance",           activities:8,  week:"Wk 3"},
+  {name:"Director Soto",   department:"Planning",          activities:7,  week:"Wk 1"},
+  {name:"Planner Diaz",    department:"Planning",          activities:5,  week:"Wk 2"},
+  {name:"Analyst Vela",    department:"Planning",          activities:8,  week:"Wk 3"},
+];
+
+const COLORS = ["#D4A853","#4A90C4","#5BAD7F","#E07B5A","#8B7BC8","#5AADC8","#C46B8A","#7BA87B"];
+const MEDALS = ["🥇","🥈","🥉"];
+const TOP_N  = 10;
+
+let records     = SAMPLE;
+let trendChart  = null;
+let currentView = 'board';
+let showAll     = false;
+
+// ── MODE SWITCH ───────────────────────────────────────────
+function setMode(mode) {
+  ['sample','csv','sheets'].forEach((m, i) => {
+    document.querySelectorAll('.pill')[i].classList.toggle('active', m === mode);
+  });
+  document.getElementById('csv-zone').style.display    = mode==='csv'    ? 'block' : 'none';
+  document.getElementById('sheets-zone').style.display = mode==='sheets' ? 'block' : 'none';
+  if (mode === 'sample') {
+    records = SAMPLE;
+    setStatus('', false);
+    document.getElementById('last-updated').textContent = 'Sample Data';
+    render();
+  }
+}
+
+// ── CSV ───────────────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.trim().split('\n').filter(l => l.trim());
+  const raw   = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[\s"]/g,''));
+  return lines.slice(1).map(line => {
+    const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g,''));
+    const o = {};
+    raw.forEach((h, i) => o[h] = vals[i] || '');
+    return {
+      name:       o.name || o.fullname || '',
+      department: o.department || o.dept || '',
+      activities: parseInt(o.activities || o.activitynumber || o.count || '0', 10),
+      week:       o.week || o.period || 'Unknown'
+    };
+  }).filter(r => r.name && r.department);
+}
+
+function handleCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('csv-name').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const parsed = parseCSV(e.target.result);
+    if (!parsed.length) { setStatus('No valid records found. Check column names.', true); return; }
+    records = parsed;
+    document.getElementById('last-updated').textContent = `${file.name} — ${new Date().toLocaleDateString()}`;
+    setStatus(`✓ Loaded ${parsed.length} records from ${file.name}`);
+    render();
+  };
+  reader.readAsText(file);
+}
+
+// ── SHEETS ───────────────────────────────────────────────
+async function handleSheets() {
+  const url = document.getElementById('sheetsUrl').value.trim();
+  if (!url) return;
+  setStatus('⏳ Loading from Google Sheets…');
+  try {
+    const res  = await fetch(url);
+    if (!res.ok) throw new Error();
+    const text = await res.text();
+    const parsed = parseCSV(text);
+    if (!parsed.length) { setStatus('No valid records found. Check sheet columns.', true); return; }
+    records = parsed;
+    document.getElementById('last-updated').textContent = `Google Sheets — ${new Date().toLocaleDateString()}`;
+    setStatus(`✓ Loaded ${parsed.length} records from Google Sheets`);
+    render();
+  } catch {
+    setStatus('Error: Could not load sheet. Make sure the sheet is published as CSV.', true);
+  }
+}
+
+function setStatus(msg, isErr = false) {
+  const el = document.getElementById('status');
+  el.textContent  = msg;
+  el.className    = isErr ? 'err' : 'ok';
+}
+
+// ── AGGREGATION ──────────────────────────────────────────
+function byDept() {
+  const map = {};
+  records.forEach(r => {
+    if (!map[r.department]) map[r.department] = { total: 0, members: new Set() };
+    map[r.department].total += r.activities;
+    map[r.department].members.add(r.name);
+  });
+  return Object.entries(map)
+    .map(([dept, v]) => ({ dept, total: v.total, count: v.members.size }))
+    .sort((a, b) => b.total - a.total);
+}
+
+function byTrend(deptNames) {
+  const weeks = [...new Set(records.map(r => r.week))].sort();
+  return {
+    weeks, depts: deptNames,
+    rows: weeks.map(w => {
+      const e = { week: w };
+      deptNames.forEach(d => {
+        e[d] = records.filter(r => r.week===w && r.department===d).reduce((s,r)=>s+r.activities,0);
+      });
+      return e;
+    })
+  };
+}
+
+// ── TOP 10 TOGGLE ─────────────────────────────────────────
+function toggleShowAll() {
+  showAll = !showAll;
+  const all = byDept();
+  const btn = document.getElementById('show-all-btn');
+  btn.textContent = showAll
+    ? `Show top ${TOP_N} only ▴`
+    : `Show all ${all.length} departments ▾`;
+  renderBoard();
+}
+
+// ── RENDER BOARD ─────────────────────────────────────────
+function renderBoard() {
+  const all   = byDept();
+  const shown = showAll ? all : all.slice(0, TOP_N);
+  const max   = all[0]?.total || 1;
+
+  // hide toggle if ≤10 depts
+  const btn = document.getElementById('show-all-btn');
+  btn.style.display = all.length <= TOP_N ? 'none' : 'inline-block';
+
+  document.getElementById('rank-rows').innerHTML = shown.map((d, i) => {
+    const pct   = Math.round(d.total / max * 100);
+    const color = COLORS[i % COLORS.length];
+    const icon  = i < 3 ? MEDALS[i] : `<span style="font-size:17px;font-weight:700;color:var(--muted)">${i+1}</span>`;
+    return `
+      <div class="rank-row">
+        <div class="rank-icon">${icon}</div>
+        <div>
+          <div class="dept-name">${d.dept}</div>
+          <div class="dept-sub">${d.count} participant${d.count!==1?'s':''}</div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+          <span style="font-size:12px;color:var(--muted);min-width:32px">${pct}%</span>
+        </div>
+        <div class="total">${d.total}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── RENDER TRENDS ────────────────────────────────────────
+function renderTrends() {
+  // Trends always show top 10 to keep chart readable
+  const top    = byDept().slice(0, TOP_N);
+  const names  = top.map(d => d.dept);
+  const { weeks, depts, rows } = byTrend(names);
+  if (trendChart) trendChart.destroy();
+  trendChart = new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+      labels: weeks,
+      datasets: depts.map((dept, i) => ({
+        label: dept,
+        data:  rows.map(r => r[dept] || 0),
+        borderColor:     COLORS[i % COLORS.length],
+        backgroundColor: COLORS[i % COLORS.length] + '18',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.35,
+        fill: false
+      }))
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 18, font: { family: 'DM Sans', size: 12 } } }
+      },
+      scales: {
+        x: { grid: { color: '#EDF0F7' }, ticks: { font: { family: 'DM Sans', size: 12 } } },
+        y: {
+          beginAtZero: true,
+          grid: { color: '#EDF0F7' },
+          ticks: { font: { family: 'DM Sans', size: 12 } },
+          title: { display: true, text: 'Activities', color: '#8A9BB5', font: { family: 'DM Sans', size: 12 } }
+        }
+      }
+    }
+  });
+}
+
+// ── VIEW SWITCH ──────────────────────────────────────────
+function switchView(view) {
+  currentView = view;
+  document.getElementById('tab-board').classList.toggle('active',  view==='board');
+  document.getElementById('tab-trends').classList.toggle('active', view==='trends');
+  document.getElementById('view-board').style.display  = view==='board'  ? 'block' : 'none';
+  document.getElementById('view-trends').style.display = view==='trends' ? 'block' : 'none';
+  if (view === 'trends') renderTrends();
+}
+
+function render() {
+  renderBoard();
+  if (currentView === 'trends') renderTrends();
+}
+
+render();
+</script>
+</body>
+</html>
