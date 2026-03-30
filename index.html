@@ -235,6 +235,7 @@
       <div class="row">
         <input type="text" id="sheetsUrl" placeholder="Paste Google Sheets published CSV URL…">
         <button class="btn btn-navy" onclick="handleSheets()">Load</button>
+        <button class="btn" style="background:#edf0f7;color:#8A9BB5;" onclick="clearSavedSheet()">Clear</button>
       </div>
       <p class="hint">
         In Google Sheets: <code>File → Share → Publish to web → Entire Document → CSV</code><br>
@@ -370,10 +371,8 @@ function handleCSV(input) {
 }
 
 // ── SHEETS ───────────────────────────────────────────────
-async function handleSheets() {
-  const url = document.getElementById('sheetsUrl').value.trim();
-  if (!url) return;
-  setStatus('⏳ Loading from Google Sheets…');
+async function fetchFromSheets(url, isAutoLoad = false) {
+  if (!isAutoLoad) setStatus('⏳ Loading from Google Sheets…');
   try {
     const res  = await fetch(url);
     if (!res.ok) throw new Error();
@@ -381,12 +380,30 @@ async function handleSheets() {
     const parsed = parseCSV(text);
     if (!parsed.length) { setStatus('No valid records found. Check sheet columns.', true); return; }
     records = parsed;
+    // ✅ Save URL so it auto-loads on every future page refresh
+    localStorage.setItem('pharr_sheets_url', url);
     document.getElementById('last-updated').textContent = `Google Sheets — ${new Date().toLocaleDateString()}`;
-    setStatus(`✓ Loaded ${parsed.length} records from Google Sheets`);
+    setStatus(`✓ Live data loaded from Google Sheets`);
     render();
   } catch {
-    setStatus('Error: Could not load sheet. Make sure the sheet is published as CSV.', true);
+    setStatus('Error: Could not load sheet. Make sure it is published as CSV.', true);
   }
+}
+
+async function handleSheets() {
+  const url = document.getElementById('sheetsUrl').value.trim();
+  if (!url) return;
+  await fetchFromSheets(url);
+}
+
+// ── CLEAR SAVED SHEET ─────────────────────────────────────
+function clearSavedSheet() {
+  localStorage.removeItem('pharr_sheets_url');
+  document.getElementById('sheetsUrl').value = '';
+  records = SAMPLE;
+  document.getElementById('last-updated').textContent = 'Sample Data';
+  setStatus('Cleared. Now showing sample data.');
+  render();
 }
 
 function setStatus(msg, isErr = false) {
@@ -520,7 +537,23 @@ function render() {
   if (currentView === 'trends') renderTrends();
 }
 
-render();
+// ── AUTO-INIT: restore Google Sheets on every page load ──
+(async () => {
+  const saved = localStorage.getItem('pharr_sheets_url');
+  if (saved) {
+    // Restore the URL in the input field so admin can see it
+    document.getElementById('sheetsUrl').value = saved;
+    // Switch UI to sheets mode quietly
+    ['sample','csv','sheets'].forEach((m, i) => {
+      document.querySelectorAll('.pill')[i].classList.toggle('active', m === 'sheets');
+    });
+    document.getElementById('sheets-zone').style.display = 'block';
+    document.getElementById('last-updated').textContent  = 'Loading from Google Sheets…';
+    await fetchFromSheets(saved, true);
+  } else {
+    render();
+  }
+})();
 </script>
 </body>
 </html>
