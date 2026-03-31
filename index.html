@@ -410,15 +410,12 @@ function setStatus(msg, isErr = false) {
 
 // ── AGGREGATION ──────────────────────────────────────────
 function byDept() {
-  // Get the latest week present in the data
   const weeks = [...new Set(records.map(r => r.week))].sort();
   const latestWeek = weeks[weeks.length - 1];
-
   const map = {};
-  // Only look at the latest week's rows for the leaderboard total
   records.filter(r => r.week === latestWeek).forEach(r => {
     if (!map[r.department]) map[r.department] = { total: 0, director: r.name };
-    map[r.department].total = r.activities; // use as-is, not summed
+    map[r.department].total = r.activities;
   });
   return Object.entries(map)
     .map(([dept, v]) => ({ dept, total: v.total, director: v.director }))
