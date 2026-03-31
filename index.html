@@ -460,11 +460,10 @@ function setStatus(msg, isErr = false) {
 
 // ── AGGREGATION ──────────────────────────────────────────
 function byDept() {
-  // Use only the latest week so totals reflect current progress, not a sum
-  const allWeeks  = [...new Set(records.map(r => r.week))].sort();
-  const latestWk  = allWeeks[allWeeks.length - 1];
+  const weeks = [...new Set(records.map(r => r.week))].sort();
+  const latestWeek = weeks[weeks.length - 1];
   const map = {};
-  records.filter(r => r.week === latestWk).forEach(r => {
+  records.filter(r => r.week === latestWeek).forEach(r => {
     if (!map[r.department]) map[r.department] = { total: 0, director: r.name };
     map[r.department].total = r.activities;
   });
