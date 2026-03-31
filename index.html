@@ -11,223 +11,102 @@
   :root {
     --navy:      #1B3A6B;
     --navy-dark: #0F2347;
-    --navy-mid:  #254C8C;
     --gold:      #D4A853;
-    --gold-lt:   #F0C878;
     --white:     #FFFFFF;
     --muted:     #8A9BB5;
     --bg:        #F2F5FB;
     --border:    #DDE3EE;
     --surface:   #FFFFFF;
+    --green:     #5BAD7F;
+    --red:       #E07B5A;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--navy-dark); min-height: 100vh; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--navy-dark);
-    min-height: 100vh;
-  }
+  /* HEADER */
+  header { background: var(--navy-dark); padding: 20px 40px; display: flex; align-items: center; gap: 18px; border-bottom: 3px solid var(--gold); }
+  .header-badge { width: 52px; height: 52px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy-dark); flex-shrink: 0; }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--white); }
+  header p  { font-size: 12px; color: var(--muted); margin-top: 3px; letter-spacing: .5px; text-transform: uppercase; }
 
-  /* ── HEADER ── */
-  header {
-    background: var(--navy-dark);
-    padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    border-bottom: 3px solid var(--gold);
-  }
-  .header-badge {
-    width: 52px; height: 52px;
-    background: var(--gold);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 20px; font-weight: 700;
-    color: var(--navy-dark);
-    flex-shrink: 0;
-  }
-  header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px; color: var(--white);
-    letter-spacing: 0.3px;
-  }
-  header p { font-size: 12px; color: var(--muted); margin-top: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
-
-  /* ── LAYOUT ── */
+  /* LAYOUT */
   .main { max-width: 1080px; margin: 0 auto; padding: 32px 24px; }
+  .card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+  .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
 
-  /* ── CARDS ── */
-  .card {
-    background: var(--surface);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    padding: 24px;
-    margin-bottom: 24px;
-  }
-  .card-label {
-    font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
-    text-transform: uppercase; color: var(--muted);
-    margin-bottom: 16px;
-  }
-
-  /* ── SOURCE TABS ── */
+  /* ADMIN */
   .pill-tabs { display: flex; gap: 6px; margin-bottom: 18px; }
-  .pill {
-    padding: 7px 18px; border-radius: 20px;
-    border: 2px solid var(--border);
-    cursor: pointer; font-size: 13px; font-weight: 600;
-    background: transparent; color: var(--navy);
-    transition: all .15s;
-  }
+  .pill { padding: 7px 18px; border-radius: 20px; border: 2px solid var(--border); cursor: pointer; font-size: 13px; font-weight: 600; background: transparent; color: var(--navy); transition: all .15s; }
   .pill.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
-
   .source-zone { animation: fadeIn .2s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-
+  @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
   .row { display: flex; gap: 10px; align-items: center; }
-  input[type=text] {
-    flex: 1; padding: 10px 14px;
-    border-radius: 8px; border: 1.5px solid var(--border);
-    font-size: 14px; font-family: inherit; outline: none;
-    transition: border-color .15s;
-  }
+  input[type=text] { flex:1; padding:10px 14px; border-radius:8px; border:1.5px solid var(--border); font-size:14px; font-family:inherit; outline:none; }
   input[type=text]:focus { border-color: var(--navy); }
+  .btn { padding:10px 20px; border-radius:8px; border:none; cursor:pointer; font-size:13px; font-weight:700; font-family:inherit; white-space:nowrap; }
+  .btn-navy { background:var(--navy); color:var(--white); }
+  .btn-gold { background:var(--gold); color:var(--navy-dark); }
+  .hint { font-size:12px; color:var(--muted); margin-top:10px; line-height:1.6; }
+  .hint code { background:#EEF1F9; padding:2px 6px; border-radius:4px; font-size:11px; }
+  #status { font-size:13px; font-weight:600; margin-top:12px; min-height:18px; }
+  .ok  { color: var(--green); }
+  .err { color: var(--red); }
 
-  .btn {
-    padding: 10px 20px; border-radius: 8px;
-    border: none; cursor: pointer;
-    font-size: 13px; font-weight: 700;
-    font-family: inherit; transition: opacity .15s;
-    white-space: nowrap;
-  }
-  .btn:hover { opacity: .85; }
-  .btn-navy { background: var(--navy); color: var(--white); }
-  .btn-gold { background: var(--gold); color: var(--navy-dark); }
+  /* META + TABS */
+  .meta-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px; }
+  .meta-bar small { font-size:12px; color:var(--muted); }
+  .view-tabs { display:flex; gap:4px; background:var(--white); border:1px solid var(--border); border-radius:10px; padding:4px; }
+  .view-tab { padding:8px 20px; border-radius:7px; border:none; background:transparent; font-size:14px; font-weight:600; font-family:inherit; color:var(--muted); cursor:pointer; transition:all .15s; }
+  .view-tab.active { background:var(--navy); color:var(--white); }
 
-  .hint { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
-  .hint code { background: #EEF1F9; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+  /* LEADERBOARD */
+  .lb-header { display:grid; grid-template-columns:56px 1fr 200px 90px; padding:11px 24px; background:var(--navy-dark); border-radius:10px 10px 0 0; font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--gold); }
+  .lb-header div:last-child { text-align:right; }
+  #rank-rows { border:1px solid var(--border); border-top:none; border-radius:0 0 10px 10px; overflow:hidden; }
+  .rank-row { display:grid; grid-template-columns:56px 1fr 200px 90px; padding:15px 24px; align-items:center; border-bottom:1px solid var(--bg); transition:background .12s; }
+  .rank-row:last-child { border-bottom:none; }
+  .rank-row:hover { background:#F7F9FD; }
+  .rank-icon { font-size:22px; }
+  .dept-name { font-size:15px; font-weight:600; }
+  .dept-sub  { font-size:12px; color:var(--muted); margin-top:1px; }
+  .bar-wrap  { display:flex; align-items:center; gap:8px; }
+  .bar-bg    { flex:1; height:7px; background:#EDF0F7; border-radius:4px; overflow:hidden; }
+  .bar-fill  { height:100%; border-radius:4px; }
+  .total     { font-size:20px; font-weight:700; color:var(--navy); text-align:right; }
+  .show-all-wrap { text-align:center; padding:16px 0 4px; }
+  .show-all-btn { background:none; border:1.5px solid var(--border); color:var(--muted); font-family:inherit; font-size:13px; font-weight:600; padding:8px 24px; border-radius:20px; cursor:pointer; transition:all .15s; }
+  .show-all-btn:hover { border-color:var(--navy); color:var(--navy); }
 
-  #status { font-size: 13px; font-weight: 600; margin-top: 12px; min-height: 18px; }
-  .ok  { color: #5BAD7F; }
-  .err { color: #E07B5A; }
+  /* TRENDS */
+  .trend-controls { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px; }
+  .trend-title { font-family:'Playfair Display',serif; font-size:18px; }
+  .trend-sub   { font-size:13px; color:var(--muted); margin-top:2px; }
+  .filter-pills { display:flex; gap:6px; }
+  .filter-pill { padding:6px 16px; border-radius:20px; border:1.5px solid var(--border); cursor:pointer; font-size:12px; font-weight:700; background:transparent; color:var(--muted); font-family:inherit; transition:all .15s; }
+  .filter-pill.active { background:var(--navy); color:var(--white); border-color:var(--navy); }
 
-  /* ── META BAR ── */
-  .meta-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
-  }
-  .meta-bar small { font-size: 12px; color: var(--muted); }
-
-  /* ── VIEW TABS ── */
-  .view-tabs {
-    display: flex; gap: 4px;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 10px; padding: 4px; width: fit-content;
-  }
-  .view-tab {
-    padding: 8px 20px; border-radius: 7px;
-    border: none; background: transparent;
-    font-size: 14px; font-weight: 600;
-    font-family: inherit; color: var(--muted);
-    cursor: pointer; transition: all .15s;
-  }
-  .view-tab.active { background: var(--navy); color: var(--white); }
-
-  /* ── LEADERBOARD TABLE ── */
-  .lb-header {
-    display: grid;
-    grid-template-columns: 56px 1fr 200px 90px;
-    padding: 11px 24px;
-    background: var(--navy-dark);
-    border-radius: 10px 10px 0 0;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 1.2px; text-transform: uppercase;
-    color: var(--gold);
-  }
-  .lb-header div:last-child { text-align: right; }
-
-  #rank-rows { border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; }
-
-  .rank-row {
-    display: grid;
-    grid-template-columns: 56px 1fr 200px 90px;
-    padding: 15px 24px; align-items: center;
-    border-bottom: 1px solid var(--bg);
-    transition: background .12s;
-  }
-  .rank-row:last-child { border-bottom: none; }
-  .rank-row:hover { background: #F7F9FD; }
-
-  .rank-icon { font-size: 22px; }
-
-  .dept-name { font-size: 15px; font-weight: 600; }
-  .dept-sub  { font-size: 12px; color: var(--muted); margin-top: 1px; }
-
-  .bar-wrap { display: flex; align-items: center; gap: 8px; }
-  .bar-bg   { flex: 1; height: 7px; background: #EDF0F7; border-radius: 4px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 4px; transition: width .7s cubic-bezier(.4,0,.2,1); }
-
-  .total { font-size: 20px; font-weight: 700; color: var(--navy); text-align: right; }
-
-  /* ── CHART ── */
-  .chart-title { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 4px; }
-  .chart-sub   { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-
-  /* ── SHOW ALL TOGGLE ── */
-  .show-all-wrap { text-align: center; padding: 16px 0 4px; }
-  .show-all-btn {
-    background: none; border: 1.5px solid var(--border);
-    color: var(--muted); font-family: inherit;
-    font-size: 13px; font-weight: 600;
-    padding: 8px 24px; border-radius: 20px;
-    cursor: pointer; transition: all .15s;
-  }
-  .show-all-btn:hover { border-color: var(--navy); color: var(--navy); }
-
-  /* ── TREND FILTERS ── */
-  .trend-controls {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
-  }
-  .trend-title { font-family: 'Playfair Display', serif; font-size: 18px; }
-  .trend-sub   { font-size: 13px; color: var(--muted); margin-top: 2px; }
-  .filter-pills { display: flex; gap: 6px; }
-  .filter-pill {
-    padding: 6px 16px; border-radius: 20px;
-    border: 1.5px solid var(--border);
-    cursor: pointer; font-size: 12px; font-weight: 700;
-    background: transparent; color: var(--muted);
-    font-family: inherit; transition: all .15s; letter-spacing: .3px;
-  }
-  .filter-pill.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
-
-  /* ── DELTA TABLE ── */
-  .delta-section { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 22px; }
-  .delta-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-  .delta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  @media(min-width: 640px) { .delta-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media(min-width: 900px) { .delta-grid { grid-template-columns: repeat(5, 1fr); } }
-  .delta-card {
-    background: var(--bg); border-radius: 10px;
-    padding: 12px 14px; border: 1px solid var(--border);
-  }
-  .delta-dept  { font-size: 12px; font-weight: 700; color: var(--navy-dark); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .delta-name  { font-size: 11px; color: var(--muted); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .delta-num   { font-size: 20px; font-weight: 700; }
-  .delta-week  { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .up   { color: #5BAD7F; }
-  .down { color: #E07B5A; }
+  /* DELTA CARDS */
+  .delta-section { margin-top:28px; border-top:1px solid var(--border); padding-top:22px; }
+  .delta-label   { font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+  .delta-grid    { display:grid; grid-template-columns:repeat(auto-fill, minmax(155px,1fr)); gap:8px; }
+  .delta-card    { background:var(--bg); border-radius:10px; padding:12px 14px; border:1px solid var(--border); display:flex; gap:10px; align-items:flex-start; }
+  .delta-bar     { width:3px; border-radius:2px; flex-shrink:0; align-self:stretch; min-height:60px; }
+  .delta-body    { overflow:hidden; min-width:0; }
+  .delta-dept    { font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .delta-name    { font-size:11px; color:var(--muted); margin-bottom:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .delta-num     { font-size:22px; font-weight:700; line-height:1; }
+  .delta-week    { font-size:11px; color:var(--muted); margin-top:3px; }
+  .up   { color: var(--green); }
+  .down { color: var(--red); }
   .same { color: var(--muted); }
 
-  /* ── RESPONSIVE ── */
-  @media(max-width: 640px) {
-    header { padding: 16px 20px; }
-    .main  { padding: 20px 16px; }
-    .lb-header, .rank-row { grid-template-columns: 44px 1fr 0 70px; }
-    .lb-header div:nth-child(3), .rank-row .bar-wrap { display: none; }
+  /* RESPONSIVE */
+  @media(max-width:640px) {
+    header { padding:16px 20px; }
+    .main  { padding:20px 16px; }
+    .lb-header, .rank-row { grid-template-columns:44px 1fr 0 70px; }
+    .lb-header div:nth-child(3), .rank-row .bar-wrap { display:none; }
   }
 </style>
 </head>
@@ -243,59 +122,45 @@
 
 <div class="main">
 
-  <!-- ADMIN PANEL — only visible with ?admin=pharr2026 in the URL -->
+  <!-- ADMIN — hidden, access via ?admin=pharr2026 -->
   <div id="admin-panel" class="card" style="display:none">
     <div class="card-label">⚙️ OSE Internal — Data Source</div>
     <div class="pill-tabs">
-      <button class="pill active" onclick="setMode('sample')">📋 Sample Data</button>
+      <button class="pill active" onclick="setMode('sample')">📋 Baked-in Data</button>
       <button class="pill"        onclick="setMode('csv')">⬆ Upload CSV</button>
       <button class="pill"        onclick="setMode('sheets')">📊 Google Sheets</button>
     </div>
-
-    <!-- CSV Zone -->
     <div id="csv-zone" class="source-zone" style="display:none">
       <div class="row">
         <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="handleCSV(this)">
         <button class="btn btn-gold" onclick="document.getElementById('csvFile').click()">Choose CSV File</button>
         <span id="csv-name" style="font-size:13px;color:var(--muted)">No file selected</span>
       </div>
-      <p class="hint">
-        Required columns: <code>Name</code> <code>Department</code> <code>Activities</code> <code>Week</code><br>
-        Example row: <code>Keyla Jalife, OSE, 12, Wk 1</code>
-      </p>
+      <p class="hint">Columns: <code>Name</code> <code>Department</code> <code>Activities</code> <code>Week</code></p>
     </div>
-
-    <!-- Sheets Zone -->
     <div id="sheets-zone" class="source-zone" style="display:none">
       <div class="row">
         <input type="text" id="sheetsUrl" placeholder="Paste Google Sheets published CSV URL…">
         <button class="btn btn-navy" onclick="handleSheets()">Load</button>
       </div>
-      <p class="hint">
-        In Google Sheets: <code>File → Share → Publish to web → Entire Document → CSV</code><br>
-        Copy the link and paste it above. The sheet must be published (not just shared).
-      </p>
+      <p class="hint">File → Share → Publish to web → CSV → Copy link</p>
     </div>
-
     <div id="status"></div>
   </div>
 
-  <!-- META + VIEW TOGGLE -->
+  <!-- META BAR -->
   <div class="meta-bar">
-    <small>Last updated: <span id="last-updated">Sample Data</span></small>
+    <small>Last updated: <span id="last-updated">Loading…</span></small>
     <div class="view-tabs">
       <button class="view-tab active" id="tab-board"  onclick="switchView('board')">🏆 Rankings</button>
       <button class="view-tab"        id="tab-trends" onclick="switchView('trends')">📈 Trends</button>
     </div>
   </div>
 
-  <!-- LEADERBOARD VIEW -->
+  <!-- RANKINGS VIEW -->
   <div id="view-board">
     <div class="lb-header">
-      <div>Rank</div>
-      <div>Department</div>
-      <div>Progress</div>
-      <div style="text-align:right">Total</div>
+      <div>Rank</div><div>Department</div><div>Progress</div><div style="text-align:right">Sessions</div>
     </div>
     <div id="rank-rows"></div>
     <div class="show-all-wrap">
@@ -309,7 +174,7 @@
       <div class="trend-controls">
         <div>
           <div class="trend-title">Activity Trends Over Time</div>
-          <div class="trend-sub" id="trend-sub-label">Top 10 departments by total activities</div>
+          <div class="trend-sub" id="trend-sub-label">Top 10 departments by total sessions</div>
         </div>
         <div class="filter-pills">
           <button class="filter-pill active" id="pill-top" onclick="setTrendFilter('top')">🏆 Top 10</button>
@@ -317,8 +182,6 @@
         </div>
       </div>
       <canvas id="trendChart"></canvas>
-
-      <!-- Week-over-week delta -->
       <div class="delta-section">
         <div class="delta-label">↕ Week-over-Week Change</div>
         <div class="delta-grid" id="delta-grid"></div>
@@ -329,44 +192,68 @@
 </div>
 
 <script>
-// ── ADMIN GATE ────────────────────────────────────────────
-// Change 'pharr2026' below to whatever password you want.
-// Admin link: https://yoursite.github.io/pharr-leaderboard?admin=pharr2026
+// ── ADMIN GATE ─────────────────────────────────────────────
 const ADMIN_PASSWORD = 'pharr2026';
 const isAdmin = new URLSearchParams(window.location.search).get('admin') === ADMIN_PASSWORD;
 if (isAdmin) document.getElementById('admin-panel').style.display = 'block';
 
-// ── REAL DATA (baked in as default) ───────────────────────
+// ── BAKED-IN DATA (both weeks so delta cards always work) ──
 const SAMPLE = [
-  {name:"Luis Bazan",       department:"Bridge",                           activities:1, week:"Wk 2"},
-  {name:"Roy Rodriguez",    department:"Building and Code",                activities:0, week:"Wk 2"},
-  {name:"CJ Sanchez",       department:"Chamber",                          activities:0, week:"Wk 2"},
-  {name:"Imelda Perez",     department:"City Clerks",                      activities:0, week:"Wk 2"},
-  {name:"Roland Gomez",     department:"Development Services",             activities:0, week:"Wk 2"},
-  {name:"Danny Ramirez",    department:"EMS",                              activities:0, week:"Wk 2"},
-  {name:"Patrizia Longoria",department:"Engineering",                      activities:0, week:"Wk 2"},
-  {name:"Jamison Merrick",  department:"Finance",                          activities:0, week:"Wk 2"},
-  {name:"Pilar Rodriguez",  department:"Fire Department",                  activities:0, week:"Wk 2"},
-  {name:"Kenneth Walsh",    department:"Food Services",                    activities:0, week:"Wk 2"},
-  {name:"Will Borrowski",   department:"Golf",                             activities:0, week:"Wk 2"},
-  {name:"Napoleon Coca",    department:"Grants",                           activities:0, week:"Wk 2"},
-  {name:"Laura Parra",      department:"Human Resources",                  activities:1, week:"Wk 2"},
-  {name:"Yuri Gonzalez",    department:"Intl Commercial Development",      activities:1, week:"Wk 2"},
-  {name:"Jose Pena",        department:"IT",                               activities:0, week:"Wk 2"},
-  {name:"Isaac Escobedo",   department:"Maintenance",                      activities:0, week:"Wk 2"},
-  {name:"Juan Villescas",   department:"Municipal Court",                  activities:0, week:"Wk 2"},
-  {name:"Kenia Gomez",      department:"OCC",                              activities:0, week:"Wk 2"},
-  {name:"Sergio Alanis",    department:"Parks and Rec",                    activities:0, week:"Wk 2"},
-  {name:"Juan Gonzalez",    department:"Police Department",                activities:0, week:"Wk 2"},
-  {name:"Elizabeth Diaz",   department:"Public Health",                    activities:1, week:"Wk 2"},
-  {name:"Adolfo Garcia",    department:"Public Library",                   activities:0, week:"Wk 2"},
-  {name:"Ruben Rosales",    department:"Public Utilities",                 activities:0, week:"Wk 2"},
-  {name:"Luis Marin",       department:"Public Works",                     activities:0, week:"Wk 2"},
-  {name:"Maritza Magallan", department:"Purchasing",                       activities:0, week:"Wk 2"},
-  {name:"Abel Molina",      department:"Special Events",                   activities:0, week:"Wk 2"},
+  {name:"Luis Bazan",        department:"Bridge",                       activities:0, week:"Wk 1"},
+  {name:"Roy Rodriguez",     department:"Building and Code",            activities:0, week:"Wk 1"},
+  {name:"CJ Sanchez",        department:"Chamber",                      activities:0, week:"Wk 1"},
+  {name:"Imelda Perez",      department:"City Clerks",                  activities:0, week:"Wk 1"},
+  {name:"Roland Gomez",      department:"Development Services",         activities:0, week:"Wk 1"},
+  {name:"Danny Ramirez",     department:"EMS",                          activities:0, week:"Wk 1"},
+  {name:"Patrizia Longoria", department:"Engineering",                  activities:0, week:"Wk 1"},
+  {name:"Jamison Merrick",   department:"Finance",                      activities:0, week:"Wk 1"},
+  {name:"Pilar Rodriguez",   department:"Fire Department",              activities:0, week:"Wk 1"},
+  {name:"Kenneth Walsh",     department:"Food Services",                activities:0, week:"Wk 1"},
+  {name:"Will Borrowski",    department:"Golf",                         activities:0, week:"Wk 1"},
+  {name:"Napoleon Coca",     department:"Grants",                       activities:0, week:"Wk 1"},
+  {name:"Laura Parra",       department:"Human Resources",              activities:1, week:"Wk 1"},
+  {name:"Yuri Gonzalez",     department:"Intl Commercial Development",  activities:0, week:"Wk 1"},
+  {name:"Jose Pena",         department:"IT",                           activities:0, week:"Wk 1"},
+  {name:"Isaac Escobedo",    department:"Maintenance",                  activities:0, week:"Wk 1"},
+  {name:"Juan Villescas",    department:"Municipal Court",              activities:0, week:"Wk 1"},
+  {name:"Kenia Gomez",       department:"OCC",                          activities:0, week:"Wk 1"},
+  {name:"Sergio Alanis",     department:"Parks and Rec",                activities:0, week:"Wk 1"},
+  {name:"Juan Gonzalez",     department:"Police Department",            activities:0, week:"Wk 1"},
+  {name:"Elizabeth Diaz",    department:"Public Health",                activities:1, week:"Wk 1"},
+  {name:"Adolfo Garcia",     department:"Public Library",               activities:0, week:"Wk 1"},
+  {name:"Ruben Rosales",     department:"Public Utilities",             activities:0, week:"Wk 1"},
+  {name:"Luis Marin",        department:"Public Works",                 activities:0, week:"Wk 1"},
+  {name:"Maritza Magallan",  department:"Purchasing",                   activities:0, week:"Wk 1"},
+  {name:"Abel Molina",       department:"Special Events",               activities:0, week:"Wk 1"},
+  {name:"Luis Bazan",        department:"Bridge",                       activities:1, week:"Wk 2"},
+  {name:"Roy Rodriguez",     department:"Building and Code",            activities:0, week:"Wk 2"},
+  {name:"CJ Sanchez",        department:"Chamber",                      activities:0, week:"Wk 2"},
+  {name:"Imelda Perez",      department:"City Clerks",                  activities:0, week:"Wk 2"},
+  {name:"Roland Gomez",      department:"Development Services",         activities:0, week:"Wk 2"},
+  {name:"Danny Ramirez",     department:"EMS",                          activities:0, week:"Wk 2"},
+  {name:"Patrizia Longoria", department:"Engineering",                  activities:0, week:"Wk 2"},
+  {name:"Jamison Merrick",   department:"Finance",                      activities:0, week:"Wk 2"},
+  {name:"Pilar Rodriguez",   department:"Fire Department",              activities:0, week:"Wk 2"},
+  {name:"Kenneth Walsh",     department:"Food Services",                activities:0, week:"Wk 2"},
+  {name:"Will Borrowski",    department:"Golf",                         activities:0, week:"Wk 2"},
+  {name:"Napoleon Coca",     department:"Grants",                       activities:0, week:"Wk 2"},
+  {name:"Laura Parra",       department:"Human Resources",              activities:1, week:"Wk 2"},
+  {name:"Yuri Gonzalez",     department:"Intl Commercial Development",  activities:1, week:"Wk 2"},
+  {name:"Jose Pena",         department:"IT",                           activities:0, week:"Wk 2"},
+  {name:"Isaac Escobedo",    department:"Maintenance",                  activities:0, week:"Wk 2"},
+  {name:"Juan Villescas",    department:"Municipal Court",              activities:0, week:"Wk 2"},
+  {name:"Kenia Gomez",       department:"OCC",                          activities:0, week:"Wk 2"},
+  {name:"Sergio Alanis",     department:"Parks and Rec",                activities:0, week:"Wk 2"},
+  {name:"Juan Gonzalez",     department:"Police Department",            activities:0, week:"Wk 2"},
+  {name:"Elizabeth Diaz",    department:"Public Health",                activities:1, week:"Wk 2"},
+  {name:"Adolfo Garcia",     department:"Public Library",               activities:0, week:"Wk 2"},
+  {name:"Ruben Rosales",     department:"Public Utilities",             activities:0, week:"Wk 2"},
+  {name:"Luis Marin",        department:"Public Works",                 activities:0, week:"Wk 2"},
+  {name:"Maritza Magallan",  department:"Purchasing",                   activities:0, week:"Wk 2"},
+  {name:"Abel Molina",       department:"Special Events",               activities:0, week:"Wk 2"},
 ];
 
-const COLORS = ["#D4A853","#4A90C4","#5BAD7F","#E07B5A","#8B7BC8","#5AADC8","#C46B8A","#7BA87B"];
+const COLORS = ["#D4A853","#4A90C4","#5BAD7F","#E07B5A","#8B7BC8","#5AADC8","#C46B8A","#7BA87B","#C4A44A","#4AC49A"];
 const MEDALS = ["🥇","🥈","🥉"];
 const TOP_N  = 10;
 
@@ -374,36 +261,48 @@ let records     = SAMPLE;
 let trendChart  = null;
 let currentView = 'board';
 let showAll     = false;
-let trendFilter = 'top'; // 'top' | 'az'
+let trendFilter = 'top';
 
-// ── MODE SWITCH ───────────────────────────────────────────
-function setMode(mode) {
-  ['sample','csv','sheets'].forEach((m, i) => {
-    document.querySelectorAll('.pill')[i].classList.toggle('active', m === mode);
-  });
-  document.getElementById('csv-zone').style.display    = mode==='csv'    ? 'block' : 'none';
-  document.getElementById('sheets-zone').style.display = mode==='sheets' ? 'block' : 'none';
-  if (mode === 'sample') {
+// ── GOOGLE SHEETS ──────────────────────────────────────────
+const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRUBQA1CfB0eX8dVg6oNnLwR8LR0SU-dyxLY-fYW-_b1PNyvt4hY0108SN5uZdEmH2ib3H_dUuogTSr/pub?output=csv';
+
+async function loadFromSheets(url) {
+  try {
+    const res = await fetch(url + '&t=' + Date.now());
+    if (!res.ok) throw new Error();
+    const text   = await res.text();
+    const parsed = parseCSV(text);
+    if (!parsed.length) throw new Error();
+    records = parsed;
+    document.getElementById('last-updated').textContent = `Google Sheets — ${new Date().toLocaleDateString()}`;
+  } catch {
     records = SAMPLE;
-    setStatus('', false);
-    document.getElementById('last-updated').textContent = 'Sample Data';
-    render();
+    document.getElementById('last-updated').textContent = 'Baked-in data (sheet unavailable)';
   }
+  render();
 }
 
-// ── CSV ───────────────────────────────────────────────────
+// ── ADMIN ──────────────────────────────────────────────────
+function setMode(mode) {
+  document.querySelectorAll('.pill').forEach((p, i) =>
+    p.classList.toggle('active', ['sample','csv','sheets'][i] === mode));
+  document.getElementById('csv-zone').style.display    = mode === 'csv'    ? 'block' : 'none';
+  document.getElementById('sheets-zone').style.display = mode === 'sheets' ? 'block' : 'none';
+  if (mode === 'sample') { records = SAMPLE; document.getElementById('last-updated').textContent = 'Baked-in data'; setStatus(''); render(); }
+}
+
 function parseCSV(text) {
-  const lines = text.trim().split('\n').filter(l => l.trim());
-  const raw   = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[\s"]/g,''));
+  const lines   = text.trim().split('\n').filter(l => l.trim());
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[\s"]/g,''));
   return lines.slice(1).map(line => {
     const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g,''));
     const o = {};
-    raw.forEach((h, i) => o[h] = vals[i] || '');
+    headers.forEach((h, i) => o[h] = vals[i] || '');
     return {
-      name:       o.name || o.fullname || '',
-      department: o.department || o.dept || '',
+      name:       o.name       || o.fullname || '',
+      department: o.department || o.dept     || '',
       activities: parseInt(o.activities || o.activitynumber || o.count || '0', 10),
-      week:       o.week || o.period || 'Unknown'
+      week:       o.week       || o.period   || 'Unknown'
     };
   }).filter(r => r.name && r.department);
 }
@@ -415,102 +314,84 @@ function handleCSV(input) {
   const reader = new FileReader();
   reader.onload = e => {
     const parsed = parseCSV(e.target.result);
-    if (!parsed.length) { setStatus('No valid records found. Check column names.', true); return; }
+    if (!parsed.length) { setStatus('No valid records found.', true); return; }
     records = parsed;
     document.getElementById('last-updated').textContent = `${file.name} — ${new Date().toLocaleDateString()}`;
-    setStatus(`✓ Loaded ${parsed.length} records from ${file.name}`);
+    setStatus(`✓ ${parsed.length} records loaded`);
     render();
   };
   reader.readAsText(file);
 }
 
-// ── SHEETS ───────────────────────────────────────────────
-const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRUBQA1CfB0eX8dVg6oNnLwR8LR0SU-dyxLY-fYW-_b1PNyvt4hY0108SN5uZdEmH2ib3H_dUuogTSr/pub?output=csv';
-
-async function loadFromSheets(url) {
-  setStatus('⏳ Syncing with Google Sheets…');
-  try {
-    const res = await fetch(url + '&t=' + Date.now());
-    if (!res.ok) throw new Error();
-    const text = await res.text();
-    const parsed = parseCSV(text);
-    if (!parsed.length) throw new Error();
-    records = parsed;
-    document.getElementById('last-updated').textContent = `Google Sheets — ${new Date().toLocaleDateString()}`;
-    setStatus(`✓ Live — ${parsed.length} records loaded`);
-    render();
-  } catch {
-    // Fall back to baked-in data silently
-    document.getElementById('last-updated').textContent = `Baked-in data (sheet unavailable)`;
-    setStatus('');
-    render();
-  }
-}
-
 async function handleSheets() {
   const url = document.getElementById('sheetsUrl').value.trim() || SHEETS_URL;
+  setStatus('⏳ Loading…');
   await loadFromSheets(url);
+  setStatus('✓ Loaded from Google Sheets');
 }
 
 function setStatus(msg, isErr = false) {
   const el = document.getElementById('status');
-  el.textContent  = msg;
-  el.className    = isErr ? 'err' : 'ok';
+  el.textContent = msg;
+  el.className   = isErr ? 'err' : 'ok';
 }
 
-// ── AGGREGATION ──────────────────────────────────────────
+// ── DATA HELPERS ───────────────────────────────────────────
+
+function allWeeks() {
+  return [...new Set(records.map(r => r.week))].sort();
+}
+
+// Rankings use LATEST week's session count only (not cumulative)
 function byDept() {
-  const weeks = [...new Set(records.map(r => r.week))].sort();
-  const latestWeek = weeks[weeks.length - 1];
+  const weeks    = allWeeks();
+  const latestWk = weeks[weeks.length - 1];
   const map = {};
-  records.filter(r => r.week === latestWeek).forEach(r => {
-    if (!map[r.department]) map[r.department] = { total: 0, director: r.name };
-    map[r.department].total = r.activities;
+  records.filter(r => r.week === latestWk).forEach(r => {
+    map[r.department] = { total: r.activities, director: r.name };
   });
   return Object.entries(map)
     .map(([dept, v]) => ({ dept, total: v.total, director: v.director }))
     .sort((a, b) => b.total - a.total);
 }
 
+// Trend rows: each week's raw session count per dept
 function byTrend(deptNames) {
-  const weeks = [...new Set(records.map(r => r.week))].sort();
-  return {
-    weeks, depts: deptNames,
-    rows: weeks.map(w => {
-      const e = { week: w };
-      deptNames.forEach(d => {
-        e[d] = records.filter(r => r.week===w && r.department===d).reduce((s,r)=>s+r.activities,0);
-      });
-      return e;
-    })
-  };
+  const weeks = allWeeks();
+  const rows  = weeks.map(w => {
+    const entry = { week: w };
+    deptNames.forEach(d => {
+      const rec = records.find(r => r.week === w && r.department === d);
+      entry[d]  = rec ? rec.activities : 0;
+    });
+    return entry;
+  });
+  return { weeks, depts: deptNames, rows };
 }
 
-// ── TOP 10 TOGGLE ─────────────────────────────────────────
+// ── BOARD ──────────────────────────────────────────────────
 function toggleShowAll() {
   showAll = !showAll;
   const all = byDept();
-  const btn = document.getElementById('show-all-btn');
-  btn.textContent = showAll
+  document.getElementById('show-all-btn').textContent = showAll
     ? `Show top ${TOP_N} only ▴`
     : `Show all ${all.length} departments ▾`;
   renderBoard();
 }
 
-// ── RENDER BOARD ─────────────────────────────────────────
 function renderBoard() {
   const all   = byDept();
   const shown = showAll ? all : all.slice(0, TOP_N);
-  const max   = all[0]?.total || 1;
+  const max   = Math.max(...all.map(d => d.total), 1);
 
-  // hide toggle if ≤10 depts
-  const btn = document.getElementById('show-all-btn');
-  btn.style.display = all.length <= TOP_N ? 'none' : 'inline-block';
+  document.getElementById('show-all-btn').style.display = all.length <= TOP_N ? 'none' : 'inline-block';
 
   document.getElementById('rank-rows').innerHTML = shown.map((d, i) => {
     const pct   = Math.round(d.total / max * 100);
     const color = COLORS[i % COLORS.length];
-    const icon  = i < 3 ? MEDALS[i] : `<span style="font-size:17px;font-weight:700;color:var(--muted)">${i+1}</span>`;
+    const icon  = i < 3
+      ? MEDALS[i]
+      : `<span style="font-size:17px;font-weight:700;color:var(--muted)">${i + 1}</span>`;
     return `
       <div class="rank-row">
         <div class="rank-icon">${icon}</div>
@@ -527,48 +408,42 @@ function renderBoard() {
   }).join('');
 }
 
-// ── TREND FILTER SWITCH ───────────────────────────────────
+// ── TRENDS + DELTA ─────────────────────────────────────────
 function setTrendFilter(f) {
   trendFilter = f;
   document.getElementById('pill-top').classList.toggle('active', f === 'top');
   document.getElementById('pill-az').classList.toggle('active',  f === 'az');
-  const label = f === 'top'
-    ? 'Top 10 departments by total activities'
-    : 'All departments — alphabetical (A–Z)';
-  document.getElementById('trend-sub-label').textContent = label;
+  document.getElementById('trend-sub-label').textContent = f === 'top'
+    ? 'Top 10 departments by total sessions'
+    : 'All departments — A to Z';
   renderTrends();
 }
 
-// ── RENDER TRENDS ────────────────────────────────────────
 function renderTrends() {
-  const all = byDept(); // sorted by total desc
+  const all = byDept();
 
-  let shown;
-  if (trendFilter === 'top') {
-    shown = all.slice(0, TOP_N);
-  } else {
-    // A–Z: all departments alphabetically
-    shown = [...all].sort((a, b) => a.dept.localeCompare(b.dept));
-  }
+  const shown = trendFilter === 'top'
+    ? all.slice(0, TOP_N)
+    : [...all].sort((a, b) => a.dept.localeCompare(b.dept));
 
-  const names = shown.map(d => d.dept);
-  const { weeks, depts, rows } = byTrend(names);
+  const { weeks, depts, rows } = byTrend(shown.map(d => d.dept));
 
+  // Line chart
   if (trendChart) trendChart.destroy();
   trendChart = new Chart(document.getElementById('trendChart'), {
     type: 'line',
     data: {
       labels: weeks,
       datasets: depts.map((dept, i) => ({
-        label: dept,
-        data:  rows.map(r => r[dept] || 0),
-        borderColor:     COLORS[i % COLORS.length],
-        backgroundColor: COLORS[i % COLORS.length] + '18',
-        borderWidth: 2.5,
-        pointRadius: 5,
+        label:            dept,
+        data:             rows.map(r => r[dept] || 0),
+        borderColor:      COLORS[i % COLORS.length],
+        backgroundColor:  COLORS[i % COLORS.length] + '22',
+        borderWidth:      2.5,
+        pointRadius:      5,
         pointHoverRadius: 7,
-        tension: 0.35,
-        fill: false
+        tension:          0.35,
+        fill:             false,
       }))
     },
     options: {
@@ -581,60 +456,57 @@ function renderTrends() {
         x: { grid: { color: '#EDF0F7' }, ticks: { font: { family: 'DM Sans', size: 12 } } },
         y: {
           beginAtZero: true,
-          grid: { color: '#EDF0F7' },
-          ticks: { font: { family: 'DM Sans', size: 12 } },
-          title: { display: true, text: 'Activities', color: '#8A9BB5', font: { family: 'DM Sans', size: 12 } }
+          grid:  { color: '#EDF0F7' },
+          ticks: { stepSize: 1, font: { family: 'DM Sans', size: 12 } },
+          title: { display: true, text: 'Sessions', color: '#8A9BB5', font: { family: 'DM Sans', size: 12 } }
         }
       }
     }
   });
 
-  // ── DELTA GRID ──────────────────────────────────────────
-  // Build week-over-week change cards for displayed departments
-  const sortedWeeks = weeks; // already sorted
-  const lastWk  = sortedWeeks[sortedWeeks.length - 1];
-  const prevWk  = sortedWeeks[sortedWeeks.length - 2];
+  // Delta cards — compare last two weeks
+  const lastWk  = weeks[weeks.length - 1];
+  const prevWk  = weeks.length >= 2 ? weeks[weeks.length - 2] : null;
+  const lastRow = rows.find(r => r.week === lastWk);
+  const prevRow = prevWk ? rows.find(r => r.week === prevWk) : null;
 
-  const deltaHTML = shown.map((d, i) => {
-    const lastRow = rows.find(r => r.week === lastWk);
-    const prevRow = rows.find(r => r.week === prevWk);
-    const last = lastRow ? (lastRow[d.dept] || 0) : 0;
-    const prev = prevRow ? (prevRow[d.dept] || 0) : null;
+  document.getElementById('delta-grid').innerHTML = shown.map((d, i) => {
+    const last  = lastRow ? (lastRow[d.dept] ?? 0) : 0;
+    const prev  = prevRow ? (prevRow[d.dept] ?? 0) : null;
     const delta = prev !== null ? last - prev : null;
     const color = COLORS[i % COLORS.length];
 
-    let changeHTML = '';
-    if (delta === null || prevWk === undefined) {
-      changeHTML = `<div class="delta-num same" style="font-size:15px">—</div><div class="delta-week">First week</div>`;
+    let numClass, numText, weekLabel;
+    if (delta === null) {
+      numClass  = 'same'; numText = '—'; weekLabel = 'First week';
     } else if (delta > 0) {
-      changeHTML = `<div class="delta-num up">+${delta}</div><div class="delta-week">vs ${prevWk}</div>`;
+      numClass  = 'up';   numText = `+${delta}`; weekLabel = `vs ${prevWk}`;
     } else if (delta < 0) {
-      changeHTML = `<div class="delta-num down">${delta}</div><div class="delta-week">vs ${prevWk}</div>`;
+      numClass  = 'down'; numText = `${delta}`;  weekLabel = `vs ${prevWk}`;
     } else {
-      changeHTML = `<div class="delta-num same">0</div><div class="delta-week">No change vs ${prevWk}</div>`;
+      numClass  = 'same'; numText = '0'; weekLabel = `No change vs ${prevWk}`;
     }
 
     return `
       <div class="delta-card">
-        <div style="width:3px;height:32px;background:${color};border-radius:2px;float:left;margin-right:10px;margin-top:2px"></div>
-        <div style="overflow:hidden">
+        <div class="delta-bar" style="background:${color}"></div>
+        <div class="delta-body">
           <div class="delta-dept">${d.dept}</div>
           <div class="delta-name">${d.director}</div>
-          ${changeHTML}
+          <div class="delta-num ${numClass}">${numText}</div>
+          <div class="delta-week">${weekLabel}</div>
         </div>
       </div>`;
   }).join('');
-
-  document.getElementById('delta-grid').innerHTML = deltaHTML;
 }
 
-// ── VIEW SWITCH ──────────────────────────────────────────
+// ── VIEW SWITCH ────────────────────────────────────────────
 function switchView(view) {
   currentView = view;
-  document.getElementById('tab-board').classList.toggle('active',  view==='board');
-  document.getElementById('tab-trends').classList.toggle('active', view==='trends');
-  document.getElementById('view-board').style.display  = view==='board'  ? 'block' : 'none';
-  document.getElementById('view-trends').style.display = view==='trends' ? 'block' : 'none';
+  document.getElementById('tab-board').classList.toggle('active',  view === 'board');
+  document.getElementById('tab-trends').classList.toggle('active', view === 'trends');
+  document.getElementById('view-board').style.display  = view === 'board'  ? 'block' : 'none';
+  document.getElementById('view-trends').style.display = view === 'trends' ? 'block' : 'none';
   if (view === 'trends') renderTrends();
 }
 
@@ -643,6 +515,7 @@ function render() {
   if (currentView === 'trends') renderTrends();
 }
 
+// ── BOOT ───────────────────────────────────────────────────
 loadFromSheets(SHEETS_URL);
 </script>
 </body>
